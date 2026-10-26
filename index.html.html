@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RSIA Irhamna | Dashboard Rawat Inap</title>
+<style>
+:root{
+ --bg:#f5f7fb;--surface:#fff;--navy:#29364d;--ink:#354158;--muted:#7c8799;--line:#e7ebf2;
+ --pink:#e9a9c6;--pink-soft:#fff0f6;--teal:#70c9c2;--teal-soft:#eaf9f7;--blue:#8dc8f3;--blue-soft:#eef7ff;
+ --purple:#c4b4ed;--purple-soft:#f3efff;--orange:#f6c17e;--green:#6dc6a6;--shadow:0 4px 18px rgba(39,55,79,.055);
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:13px}
+.app{display:grid;grid-template-columns:218px minmax(0,1fr);min-height:100vh}
+.sidebar{background:#fff;border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:0 10px 25px;border-bottom:1px solid var(--line)}
+.logo{height:38px;width:38px;border-radius:12px;background:linear-gradient(135deg,var(--pink),#f5d5e4);display:grid;place-items:center;color:#fff;font-size:21px;box-shadow:0 4px 12px #e9a9c655}
+.brand strong{display:block;font-size:14px;color:var(--navy);letter-spacing:.2px}.brand small{color:var(--muted);font-size:10px}
+.nav-title{font-size:10px;font-weight:800;letter-spacing:1.1px;color:#a0a8b5;padding:22px 11px 8px}
+.nav{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;color:#68758a;margin:3px 0;font-weight:600}
+.nav.active{background:var(--pink-soft);color:#bd6890;border-left:3px solid var(--pink);padding-left:9px}
+.nav .ico{width:18px;text-align:center;font-size:15px}
+.sidebar-note{position:absolute;bottom:18px;left:14px;right:14px;background:linear-gradient(135deg,#fff0f6,#eff9ff);border:1px solid #f4e3ed;border-radius:13px;padding:13px;color:#7b7182;font-size:11px;line-height:1.5}
+.main{min-width:0;padding:24px 27px 30px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}
+.breadcrumb{color:var(--muted);font-size:11px;margin-bottom:7px}.breadcrumb b{color:#be7296}
+h1{font-size:24px;line-height:1.2;margin:0;color:var(--navy);letter-spacing:-.6px}
+.subtitle{color:var(--muted);font-size:12px;margin-top:7px}
+.actions{display:flex;align-items:center;gap:9px}
+.pill{background:#fff;border:1px solid var(--line);padding:9px 12px;border-radius:9px;color:var(--ink);font-size:11px}
+.pill strong{color:var(--navy)}
+.status{display:inline-flex;align-items:center;gap:6px;background:var(--teal-soft);color:#328b83;padding:8px 11px;border-radius:9px;font-weight:700;font-size:11px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+select{border:1px solid var(--line);border-radius:9px;background:#fff;padding:10px 35px 10px 12px;color:var(--ink);font:inherit;outline:none;cursor:pointer}
+.filter-label{font-size:10px;color:var(--muted);display:block;margin-bottom:5px;font-weight:700;letter-spacing:.4px}
+.filter-item{display:flex;flex-direction:column}
+.section-label{font-size:10px;font-weight:800;color:#8993a3;letter-spacing:1.1px;margin:18px 0 10px}
+.grid{display:grid;gap:14px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);min-width:0;overflow:hidden}
+.kpi{padding:17px 17px 15px;position:relative}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;color:var(--muted);font-weight:700}
+.kpi-icon{width:31px;height:31px;border-radius:10px;display:grid;place-items:center;font-size:16px}
+.kpi-value{font-size:29px;font-weight:800;letter-spacing:-1px;color:var(--navy);margin:13px 0 5px}
+.kpi-foot{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.kpi-foot b{color:#399b88}.spark{height:29px;width:85px;position:absolute;right:13px;bottom:13px;opacity:.9}
+.kpi.pink .kpi-icon{background:var(--pink-soft);color:#c77c9d}.kpi.teal .kpi-icon{background:var(--teal-soft);color:#399d95}
+.kpi.blue .kpi-icon{background:var(--blue-soft);color:#4e9fd8}.kpi.purple .kpi-icon{background:var(--purple-soft);color:#8d78c6}
+.panels{grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr)}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:17px 18px 10px}
+.panel-title{font-size:13px;font-weight:800;color:var(--navy);margin:0}
+.panel-sub{font-size:10px;color:var(--muted);margin-top:5px}
+.badge{font-size:10px;background:var(--blue-soft);color:#468dc1;padding:6px 8px;border-radius:7px;font-weight:700;white-space:nowrap}
+.chart-wrap{padding:0 13px 12px}
+svg{display:block;width:100%;height:auto}
+.legend{display:flex;gap:15px;flex-wrap:wrap;padding:0 18px 15px;color:var(--muted);font-size:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}.swatch{width:8px;height:8px;border-radius:3px;display:inline-block}
+.donut-layout{display:flex;align-items:center;gap:14px;padding:6px 18px 20px}
+.donut{width:158px;max-width:48%;flex-shrink:0}
+.donut-legend{flex:1;display:grid;gap:12px}
+.legend-row{display:grid;grid-template-columns:9px minmax(0,1fr) auto;align-items:center;gap:8px;font-size:11px}
+.legend-row .name{color:#647086}.legend-row b{color:var(--navy);font-size:11px}
+.mini-dot{width:8px;height:8px;border-radius:3px}
+.bottom-grid{grid-template-columns:minmax(0,1.2fr) minmax(300px,1fr)}
+.table-card{padding-bottom:8px}
+.table-wrap{padding:0 16px 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap}
+th{text-align:left;color:#8b95a5;font-size:9px;text-transform:uppercase;letter-spacing:.6px;padding:10px 8px;border-bottom:1px solid var(--line)}
+td{padding:11px 8px;border-bottom:1px solid #f0f2f6;color:#536075}
+td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--navy);font-weight:700}
+.unit{display:flex;align-items:center;gap:8px}.unit-icon{width:27px;height:27px;border-radius:8px;display:grid;place-items:center}
+.bar-cell{display:flex;align-items:center;gap:8px;min-width:95px}.track{height:6px;background:#edf0f5;border-radius:9px;flex:1;overflow:hidden}.fill{height:100%;border-radius:9px}
+.insights{padding:0 16px 16px;display:grid;gap:10px}
+.insight{display:flex;gap:10px;padding:11px;background:#fafbfe;border:1px solid #eef1f6;border-radius:10px}
+.insight-ico{width:29px;height:29px;flex-shrink:0;border-radius:9px;display:grid;place-items:center;background:var(--pink-soft)}
+.insight strong{display:block;font-size:11px;color:var(--navy);margin-bottom:4px}.insight p{font-size:10px;color:var(--muted);margin:0;line-height:1.5}
+.data-note{margin:14px 0 0;padding:11px 13px;border:1px solid #f1e2b9;background:#fffaf0;color:#8d7646;border-radius:10px;font-size:10px;line-height:1.5}
+.footer{display:flex;justify-content:space-between;gap:10px;color:#9aa3b1;font-size:10px;padding:20px 2px 0}
+@media(max-width:1100px){.app{grid-template-columns:180px minmax(0,1fr)}.main{padding:20px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.panels,.bottom-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.app{display:block}.sidebar{position:relative;height:auto;padding:12px}.brand{padding-bottom:10px}.sidebar .nav-title,.sidebar .nav,.sidebar-note{display:none}.main{padding:16px}.topbar{align-items:flex-start;flex-direction:column}.actions{flex-wrap:wrap}.kpis{grid-template-columns:1fr 1fr}.kpi{padding:12px}.kpi-value{font-size:24px}.donut-layout{flex-direction:column}.donut{max-width:220px;width:70%}.footer{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">♡</div><div><strong>RSIA IRHAMNA</strong><small>Inpatient analytics</small></div></div>
+  <div class="nav-title">WORKSPACE</div>
+  <div class="nav active"><span class="ico">▦</span> Overview</div>
+  <div class="nav"><span class="ico">▤</span> Rawat Inap</div>
+  <div class="nav"><span class="ico">◉</span> Unit Pelayanan</div>
+  <div class="nav"><span class="ico">⌁</span> Tren Bulanan</div>
+  <div class="nav"><span class="ico">▧</span> Data & Kualitas</div>
+  <div class="nav-title">REPORTS</div>
+  <div class="nav"><span class="ico">↗</span> Ringkasan Eksekutif</div>
+  <div class="nav"><span class="ico">♡</span> Insight RSIA</div>
+  <div class="sidebar-note">♡ <b>Care with insight</b><br>Data yang rapi membantu tim memberi layanan yang lebih baik.</div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <div><div class="breadcrumb">Workspace &nbsp;›&nbsp; <b>Dashboard</b></div><h1>Rawat Inap Dashboard <span style="color:var(--pink)">♡</span></h1><div class="subtitle">Pantau volume pasien dan performa unit dalam satu tampilan.</div></div>
+    <div class="actions"><span class="status"><span class="dot"></span> Dashboard aktif</span><button class="pill" onclick="window.print()">⤓ <strong>Print / PDF</strong></button><span class="pill">Periode: <strong id="periodLabel">Jan–Sep</strong></span></div>
+  </header>
+
+  <div class="filters">
+    <div class="filter-item"><label class="filter-label" for="monthFilter">PERIODE</label><select id="monthFilter"><option value="all">Semua bulan tersedia</option><option value="q1">Q1 · Jan–Mar</option><option value="q2">Q2 · Apr–Jun</option><option value="q3">Q3 · Jul–Sep</option><option value="Jan">Januari</option><option value="Feb">Februari</option><option value="Mar">Maret</option><option value="Apr">April</option><option value="May">Mei</option><option value="Jun">Juni</option><option value="Jul">Juli</option><option value="Aug">Agustus</option><option value="Sep">September</option></select></div>
+    <div class="filter-item"><label class="filter-label" for="unitFilter">UNIT PELAYANAN</label><select id="unitFilter"><option value="all">Semua unit</option><option>Kebidanan</option><option>Perinatal</option><option>Anak</option><option>Dalam</option><option>Umum</option></select></div>
+  </div>
+
+  <div class="section-label">OVERVIEW / KEY PERFORMANCE INDICATORS</div>
+  <section class="grid kpis">
+    <article class="card kpi pink"><div class="kpi-head">Total rawat inap <span class="kpi-icon">♡</span></div><div class="kpi-value" id="kpiTotal">652</div><div class="kpi-foot"><b>●</b> Akumulasi sesuai filter</div><svg class="spark" viewBox="0 0 90 30"><path d="M0 24 L12 19 L22 21 L32 9 L42 14 L52 7 L64 12 L76 2 L90 5" fill="none" stroke="#e9a9c6" stroke-width="2.5" stroke-linecap="round"/></svg></article>
+    <article class="card kpi teal"><div class="kpi-head">Rata-rata per bulan <span class="kpi-icon">⌁</span></div><div class="kpi-value" id="kpiAvg">72,4</div><div class="kpi-foot">Berdasarkan bulan terpilih</div><svg class="spark" viewBox="0 0 90 30"><path d="M0 25 L12 18 L22 22 L32 14 L42 17 L52 9 L64 15 L76 4 L90 8" fill="none" stroke="#70c9c2" stroke-width="2.5" stroke-linecap="round"/></svg></article>
+    <article class="card kpi blue"><div class="kpi-head">Unit pelayanan <span class="kpi-icon">✚</span></div><div class="kpi-value" id="kpiUnits">5</div><div class="kpi-foot">Unit yang tercakup dalam laporan</div><svg class="spark" viewBox="0 0 90 30"><path d="M0 20 L12 21 L22 12 L32 15 L42 7 L52 13 L64 6 L76 11 L90 3" fill="none" stroke="#8dc8f3" stroke-width="2.5" stroke-linecap="round"/></svg></article>
+    <article class="card kpi purple"><div class="kpi-head">Bulan tersedia <span class="kpi-icon">▦</span></div><div class="kpi-value" id="kpiMonths">9</div><div class="kpi-foot">Januari sampai September</div><svg class="spark" viewBox="0 0 90 30"><path d="M0 24 L12 18 L22 20 L32 11 L42 15 L52 8 L64 11 L76 3 L90 4" fill="none" stroke="#b8a4e8" stroke-width="2.5" stroke-linecap="round"/></svg></article>
+  </section>
+
+  <div class="section-label">PERFORMANCE ANALYTICS</div>
+  <section class="grid panels">
+    <article class="card">
+      <div class="panel-head"><div><h2 class="panel-title">Monthly Inpatient Volume</h2><div class="panel-sub">Distribusi total rawat inap per bulan</div></div><span class="badge" id="chartBadge">9 bulan terisi</span></div>
+      <div class="chart-wrap"><svg id="monthlyChart" viewBox="0 0 660 255" role="img" aria-label="Grafik volume rawat inap bulanan"></svg></div>
+      <div class="legend"><span><i class="swatch" style="background:var(--pink)"></i>Total rawat inap</span><span><i class="swatch" style="background:var(--blue)"></i>Bulan terpilih</span></div>
+    </article>
+    <article class="card">
+      <div class="panel-head"><div><h2 class="panel-title">Unit Contribution</h2><div class="panel-sub">Komposisi rawat inap berdasarkan unit</div></div><span class="badge">Mix analysis</span></div>
+      <div class="donut-layout"><div class="donut"><svg id="donutChart" viewBox="0 0 200 200" aria-label="Grafik donat kontribusi unit"></svg></div><div class="donut-legend" id="donutLegend"></div></div>
+    </article>
+  </section>
+
+  <div class="section-label">UNIT PERFORMANCE & FINDINGS</div>
+  <section class="grid bottom-grid">
+    <article class="card table-card">
+      <div class="panel-head"><div><h2 class="panel-title">Perbandingan Unit Pelayanan</h2><div class="panel-sub">Ranking berdasarkan volume rawat inap</div></div><span class="badge">Unit ranking</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Unit</th><th>Total</th><th>Kontribusi</th><th>Volume relatif</th></tr></thead><tbody id="unitTable"></tbody></table></div>
+    </article>
+    <article class="card">
+      <div class="panel-head"><div><h2 class="panel-title">Analyst Notes</h2><div class="panel-sub">Insight utama dari data yang tersedia</div></div><span class="badge">Highlights</span></div>
+      <div class="insights" id="insights"></div>
+    </article>
+  </section>
+  <div class="data-note"><b>ⓘ Catatan kualitas data:</b> Data Januari–September tersedia. Oktober–Desember belum diberikan; nilai 0 pada bulan tersebut tidak boleh langsung ditafsirkan sebagai tidak ada pasien. Filter hanya menggunakan bulan yang memiliki data.</div>
+  <footer class="footer"><span>RSIA IRHAMNA · Inpatient analytics dashboard</span><span>Pastel pink · teal · soft blue &nbsp;♡</span></footer>
+</main>
+</div>
+<script>
+const months=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const shortMonths=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const data={
+ "Kebidanan":[42,26,30,31,21,28,23,31,30,0,0,0],
+ "Perinatal":[32,18,22,20,16,22,16,22,17,0,0,0],
+ "Anak":[16,22,12,19,20,13,21,22,37,0,0,0],
+ "Dalam":[1,1,1,0,4,3,3,2,3,0,0,0],
+ "Umum":[0,0,1,2,1,0,0,1,0,0,0]
+};
+const colors={"Kebidanan":"#e9a9c6","Perinatal":"#70c9c2","Anak":"#8dc8f3","Dalam":"#c4b4ed","Umum":"#f6c17e"};
+const icons={"Kebidanan":"♡","Perinatal":"✿","Anak":"☼","Dalam":"✚","Umum":"＋"};
+const fmt=n=>new Intl.NumberFormat("id-ID",{maximumFractionDigits:1}).format(n);
+function selectedMonths(){
+ const v=document.getElementById("monthFilter").value;
+ if(v==="q1")return [0,1,2]; if(v==="q2")return [3,4,5]; if(v==="q3")return [6,7,8];
+ if(v==="all")return [0,1,2,3,4,5,6,7,8];
+ return [shortMonths.indexOf(v)];
+}
+function render(){
+ const inds=selectedMonths(), unit=document.getElementById("unitFilter").value;
+ const units=unit==="all"?Object.keys(data):[unit];
+ const totals=inds.map(i=>units.reduce((sum,u)=>sum+data[u][i],0));
+ const sum=totals.reduce((x,y)=>x+y,0), avg=totals.length?sum/totals.length:0;
+ document.getElementById("kpiTotal").textContent=fmt(sum);
+ document.getElementById("kpiAvg").textContent=fmt(avg);
+ document.getElementById("kpiUnits").textContent=units.length;
+ document.getElementById("kpiMonths").textContent=inds.length;
+ document.getElementById("periodLabel").textContent=inds.length===9?"Jan–Sep":inds.map(i=>shortMonths[i]).join(", ");
+ document.getElementById("chartBadge").textContent=inds.length+" bulan dipilih";
+ renderMonthly(inds,totals);
+ renderDonut(inds,units,sum);
+ renderTable(inds,units,sum);
+ renderInsights(inds,units,totals);
+}
+function renderMonthly(inds,totals){
+ const svg=document.getElementById("monthlyChart"), W=660,H=255,L=38,R=10,T=16,B=42, cw=W-L-R,ch=H-T-B;
+ const max=Math.max(10,...totals), step=Math.ceil(max/4/10)*10 || 10;
+ let out="";
+ for(let v=0;v<=max;v+=step){let y=T+ch-(v/max)*ch;out+=`<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="#e9edf3" stroke-dasharray="3 4"/><text x="${L-9}" y="${y+4}" fill="#98a2b2" font-size="10" text-anchor="end">${v}</text>`}
+ const gap=9,bw=Math.min(36,(cw-(inds.length-1)*gap)/inds.length);
+ inds.forEach((idx,k)=>{let x=L+k*(cw/inds.length)+(cw/inds.length-bw)/2, h=totals[k]/max*ch, y=T+ch-h, fill="#e9a9c6";
+ out+=`<rect x="${x}" y="${y}" width="${bw}" height="${Math.max(0,h)}" rx="5" fill="${fill}" opacity=".94"><title>${months[idx]}: ${totals[k]}</title></rect>`;
+ out+=`<text x="${x+bw/2}" y="${Math.max(11,y-6)}" text-anchor="middle" fill="#58657a" font-size="10" font-weight="700">${totals[k]}</text>`;
+ out+=`<text x="${x+bw/2}" y="${H-18}" text-anchor="middle" fill="#8792a3" font-size="10">${shortMonths[idx]}</text>`;});
+ svg.innerHTML=out;
+}
+function renderDonut(inds,units,sum){
+ const svg=document.getElementById("donutChart"), legend=document.getElementById("donutLegend");
+ let vals=units.map(u=>inds.reduce((s,i)=>s+data[u][i],0)), total=vals.reduce((a,b)=>a+b,0);
+ let start=-Math.PI/2, paths="";
+ if(!total){paths='<circle cx="100" cy="100" r="65" fill="none" stroke="#edf0f5" stroke-width="24"/>';}
+ else vals.forEach((v,i)=>{if(!v)return;const angle=v/total*Math.PI*2,end=start+angle;const x1=100+65*Math.cos(start),y1=100+65*Math.sin(start),x2=100+65*Math.cos(end),y2=100+65*Math.sin(end);paths+=`<path d="M ${x1} ${y1} A 65 65 0 ${angle>Math.PI?1:0} 1 ${x2} ${y2}" fill="none" stroke="${colors[units[i]]}" stroke-width="24" stroke-linecap="round"><title>${units[i]}: ${v}</title></path>`;start=end;});
+ svg.innerHTML=paths+`<text x="100" y="95" text-anchor="middle" font-size="23" font-weight="800" fill="#29364d">${fmt(total)}</text><text x="100" y="114" text-anchor="middle" font-size="10" fill="#7c8799">total pasien</text>`;
+ legend.innerHTML=units.map((u,i)=>`<div class="legend-row"><span class="mini-dot" style="background:${colors[u]}"></span><span class="name">${u}</span><b>${fmt(vals[i])} <small style="color:#9aa3b1;font-weight:500">${total?(vals[i]/total*100).toFixed(1):"0.0"}%</small></b></div>`).join("");
+}
+function renderTable(inds,units,total){
+ const vals=units.map(u=>({u,v:inds.reduce((s,i)=>s+data[u][i],0)})).sort((a,b)=>b.v-a.v);
+ document.getElementById("unitTable").innerHTML=vals.map((x,i)=>`<tr><td><div class="unit"><span class="unit-icon" style="background:${colors[x.u]}30;color:${colors[x.u]}">${icons[x.u]}</span><b>${x.u}</b></div></td><td class="num">${fmt(x.v)}</td><td class="num">${total?(x.v/total*100).toFixed(1):"0.0"}%</td><td><div class="bar-cell"><div class="track"><div class="fill" style="width:${vals[0].v?x.v/vals[0].v*100:0}%;background:${colors[x.u]}"></div></div><b style="font-size:10px;color:#647086">#${i+1}</b></div></td></tr>`).join("");
+}
+function renderInsights(inds,units,totals){
+ const total=totals.reduce((a,b)=>a+b,0);
+ const monthly=inds.map((idx,k)=>({idx,v:totals[k]})).sort((a,b)=>b.v-a.v);
+ const ward=units.map(u=>({u,v:inds.reduce((s,i)=>s+data[u][i],0)})).sort((a,b)=>b.v-a.v);
+ const child=inds.map(i=>({i,v:data["Anak"][i]})).sort((a,b)=>b.v-a.v)[0];
+ const items=[
+ ["✦","Volume teratas",monthly.length?`${months[monthly[0].idx]} mencatat volume tertinggi pada pilihan ini: ${monthly[0].v} pasien.`:"Tidak ada data untuk filter ini."],
+ ["♡","Unit dominan",ward.length?`${ward[0].u} menjadi unit dengan volume terbesar (${ward[0].v} pasien).`:"Pilih unit untuk melihat insight."],
+ ["↗","Pantau unit Anak",units.includes("Anak")&&child?`Volume tertinggi unit Anak pada periode terpilih: ${child.v} pasien (${months[child.i]}).`:"Insight unit Anak muncul saat semua unit atau Anak dipilih."],
+ ];
+ document.getElementById("insights").innerHTML=items.map((it,i)=>`<div class="insight"><div class="insight-ico" style="background:${[ 'var(--pink-soft)','var(--teal-soft)','var(--blue-soft)'][i]}">${it[0]}</div><div><strong>${it[1]}</strong><p>${it[2]}</p></div></div>`).join("");
+}
+document.getElementById("monthFilter").addEventListener("change",render);
+document.getElementById("unitFilter").addEventListener("change",render);
+render();
+</script>
+</body>
+</html>
